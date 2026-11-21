@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B2D5B">
+<meta name="description" content="MYWAY Mobility passenger demo. A safer way to move.">
+<title>MYWAY Mobility | Passenger</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/myway-icon-192.png">
+<link rel="apple-touch-icon" href="assets/myway-icon-192.png">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--blue:#00A3FF;--navy:#0B2D5B;--pale:#E6F4FF;--white:#fff;--ink:#132b49;--muted:#718198;--line:#e5edf5;--shadow:0 12px 34px rgba(11,45,91,.10);--green:#16a36a}
+*{box-sizing:border-box}body{margin:0;background:#f4f8fc;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}button,input{font:inherit}button{cursor:pointer}.app{min-height:100vh}.topbar{height:76px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(24px,calc((100vw - 1240px)/2));position:sticky;top:0;z-index:900}.brand{display:flex;align-items:center;gap:12px}.brand img{width:58px;height:48px;object-fit:contain}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px;font-weight:800;margin-top:2px}.brand strong{font-size:17px;letter-spacing:1.4px;color:var(--navy)}.top-actions{display:flex;align-items:center;gap:12px}.status-pill{border:1px solid #dceefb;background:#f2f9ff;color:var(--navy);border-radius:30px;padding:9px 13px;font-size:12px;font-weight:700}.avatar{width:38px;height:38px;border-radius:50%;background:var(--pale);color:var(--navy);display:grid;place-items:center;font-weight:800}.layout{max-width:1240px;margin:26px auto;padding:0 24px;display:grid;grid-template-columns: minmax(330px,410px) 1fr;gap:24px}.left{display:flex;flex-direction:column;gap:16px}.welcome h1{font-size:27px;line-height:1.2;margin:0;color:var(--navy)}.welcome p{margin:7px 0 0;color:var(--muted);font-size:14px}.card{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px}.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.card-head h2{font-size:16px;margin:0;color:var(--navy)}.eyebrow{font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--blue);text-transform:uppercase}.map-wrap{position:relative;min-height:650px;border-radius:22px;overflow:hidden;box-shadow:var(--shadow);border:1px solid #dce7f2;background:#e8f3fb}.map-head{position:absolute;z-index:500;top:16px;left:16px;background:#fff;border-radius:13px;padding:11px 14px;box-shadow:0 5px 18px #0b2d5b20;font-size:12px;font-weight:800;color:var(--navy)}#map{height:650px;width:100%;z-index:1}.map-footer{position:absolute;z-index:500;bottom:16px;left:16px;right:16px;background:#fff;border-radius:15px;padding:13px 15px;box-shadow:0 5px 18px #0b2d5b20;display:flex;justify-content:space-between;align-items:center;gap:10px}.map-footer b{font-size:12px;color:var(--navy)}.map-footer span{font-size:11px;color:var(--muted)}.field{margin-bottom:12px}.field label{display:block;font-size:11px;font-weight:800;color:#526780;margin-bottom:7px}.input-wrap{display:flex;align-items:center;gap:10px;border:1px solid #dfe9f3;border-radius:13px;padding:0 12px;background:#fbfdff;height:49px}.input-wrap:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px #00a3ff18}.dot{width:9px;height:9px;border-radius:50%;background:var(--blue);flex:none}.dot.dest{background:var(--navy)}.input-wrap input{border:0;outline:0;background:transparent;width:100%;color:var(--ink);font-size:13px}.locate{border:0;background:var(--pale);color:var(--navy);border-radius:10px;width:38px;height:38px;font-size:17px}.primary{border:0;background:linear-gradient(105deg,var(--blue),#0874d1);color:#fff;font-weight:800;border-radius:13px;height:50px;width:100%;box-shadow:0 7px 16px #00a3ff30}.primary:hover{filter:brightness(.97)}.secondary{border:1px solid #dce8f3;background:#fff;color:var(--navy);border-radius:12px;padding:11px 14px;font-size:12px;font-weight:800}.ride-options{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:13px 0}.ride-option{border:1px solid var(--line);border-radius:13px;padding:11px;text-align:left;background:#fff;color:var(--navy)}.ride-option.active{border:2px solid var(--blue);background:#f2faff;padding:10px}.ride-option b{display:block;font-size:12px}.ride-option small{font-size:10px;color:var(--muted)}.safe-strip{display:flex;align-items:center;gap:12px;background:linear-gradient(110deg,#eff8ff,#fff);border:1px solid #dceefa;border-radius:16px;padding:14px}.shield{width:38px;height:38px;border-radius:12px;background:#dff2ff;color:#087bd1;display:grid;place-items:center;font-size:20px}.safe-strip b{display:block;font-size:12px;color:var(--navy)}.safe-strip span{font-size:11px;color:var(--muted)}.sos-card{border:1px solid #ffe0e0;background:#fffafa}.sos-row{display:flex;align-items:center;justify-content:space-between;gap:14px}.sos-copy b{display:block;color:#9f2330;font-size:14px}.sos-copy span{display:block;color:#8b6d72;font-size:11px;margin-top:4px;line-height:1.4}.sos-btn{border:0;border-radius:50%;width:68px;height:68px;background:#e53945;color:#fff;font-weight:900;box-shadow:0 0 0 7px #ffe8e9;font-size:12px;flex:none}.sos-btn:active{transform:scale(.96)}.bottomnav{display:flex;justify-content:space-around;background:#fff;border-top:1px solid var(--line);padding:9px 8px calc(9px + env(safe-area-inset-bottom));position:fixed;bottom:0;left:0;right:0;z-index:1000;display:none}.navbtn{border:0;background:none;color:#8392a6;font-size:10px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:3px}.navbtn span{font-size:19px}.navbtn.active{color:#007fd6}.modal-backdrop{position:fixed;inset:0;background:#061a33a8;display:none;align-items:center;justify-content:center;padding:18px;z-index:2000}.modal-backdrop.show{display:flex}.modal{background:#fff;border-radius:22px;padding:25px;max-width:410px;width:100%;box-shadow:0 24px 80px #00152d55}.modal h2{margin:0 0 8px;color:var(--navy);font-size:21px}.modal p{color:var(--muted);font-size:13px;line-height:1.55}.modal-actions{display:flex;gap:10px;margin-top:18px}.modal-actions button{flex:1}.danger{background:#df3342}.sent-icon{width:62px;height:62px;background:#e8f8f0;color:#15945e;border-radius:50%;display:grid;place-items:center;font-size:30px;margin-bottom:14px}.toast{position:fixed;top:88px;left:50%;transform:translateX(-50%);z-index:2200;background:var(--navy);color:#fff;padding:12px 18px;border-radius:12px;font-size:12px;box-shadow:var(--shadow);display:none}.toast.show{display:block}.trip-panel{display:none}.trip-panel.show{display:block}.contact-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:12px}.contact-row:last-child{border:0}.tag{font-size:10px;border-radius:20px;background:#eaf8f1;color:#128451;padding:5px 8px;font-weight:800}.small-note{font-size:10px;color:var(--muted);line-height:1.5;margin-top:12px}.leaflet-control-attribution{font-size:9px!important}
+@media(max-width:850px){.topbar{height:66px;padding:0 16px}.brand img{width:48px;height:40px}.layout{display:flex;flex-direction:column;padding:0 14px;margin:20px auto 90px;gap:15px}.right{order:-1}.left{order:0}.welcome h1{font-size:24px}.map-wrap{order:-1;min-height:310px}.map-head{top:10px;left:10px}#map{height:330px}.map-footer{left:10px;right:10px;bottom:10px}.bottomnav{display:flex}.card{padding:17px}.status-pill{font-size:10px;padding:8px 10px}.layout .map-wrap{margin-bottom:2px}}
+@media(min-width:851px){.left .map-wrap{display:none}.right{min-width:0}.right .map-wrap{display:block}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+ <div class="brand"><img src="assets/myway-logo.png" alt="MYWAY Mobility logo"><div><strong>MYWAY</strong><small>MOBILITY</small></div></div>
+ <div class="top-actions"><div class="status-pill">● DEMO MODE</div><div class="avatar">N</div></div>
+</header>
+<main class="layout">
+ <section class="left">
+  <div class="welcome"><div class="eyebrow">A safer way to move</div><h1>Where would you like to go?</h1><p>Book a ride with confidence. Your safety comes first.</p></div>
+  <div class="card" id="bookingCard">
+   <div class="card-head"><h2>Book your ride</h2><span class="eyebrow">01 / BOOK</span></div>
+   <div class="field"><label> PICK-UP LOCATION</label><div class="input-wrap"><span class="dot"></span><input id="pickup" value="Cape Town City Centre" aria-label="Pick-up location"><button class="locate" id="useLocation" title="Use my location">⌖</button></div></div>
+   <div class="field"><label>WHERE TO?</label><div class="input-wrap"><span class="dot dest"></span><input id="destination" placeholder="Enter your destination" aria-label="Destination"></div></div>
+   <div class="ride-options"><button class="ride-option active" data-ride="MYWAY Standard"><b>🚘 MYWAY Standard</b><small>Everyday comfort</small></button><button class="ride-option" data-ride="MYWAY XL"><b>🚙 MYWAY XL</b><small>More room</small></button></div>
+   <button class="primary" id="findRide">Find my ride&nbsp; →</button>
+   <p class="small-note">Demo estimate only. No driver will be dispatched and no payment will be taken.</p>
+  </div>
+  <div class="card trip-panel" id="tripPanel">
+   <div class="card-head"><h2>Your ride preview</h2><span class="tag">DEMO</span></div>
+   <div style="font-size:13px;font-weight:800;color:var(--navy)" id="routeTitle">Cape Town → Destination</div>
+   <p style="font-size:11px;color:var(--muted);margin:6px 0 14px">A sample driver has been matched for this demonstration.</p>
+   <div class="contact-row"><span>Driver</span><b>Thabo M. · MYWAY verified</b></div><div class="contact-row"><span>Vehicle</span><b>White Toyota Corolla · Demo</b></div><div class="contact-row"><span>Estimated arrival</span><b>5 minutes</b></div>
+   <button class="secondary" style="width:100%;margin-top:14px" id="endTrip">End demo trip</button>
+  </div>
+  <div class="safe-strip"><div class="shield">✓</div><div><b>Your safety travels with you</b><span>Verified-driver concept · Live trip sharing · SOS assistance</span></div></div>
+  <div class="card sos-card"><div class="sos-row"><div class="sos-copy"><b>Need urgent help?</b><span>Use the demo SOS to see how MYWAY would alert its safety team and your trusted contacts.</span></div><button class="sos-btn" id="sosOpen" aria-label="Open SOS demo">SOS</button></div></div>
+  <div class="card">
+   <div class="card-head"><h2>Trusted contacts</h2><span class="eyebrow">GUARDIAN</span></div>
+   <div class="contact-row"><span>♡ &nbsp; Mom · +27 82 *** 0142</span><span class="tag">Selected</span></div>
+   <div class="contact-row"><span>♡ &nbsp; Lindiwe · +27 72 *** 8831</span><span class="tag">Selected</span></div>
+   <p class="small-note">Sample contacts only. In the real app, you choose who can receive your trip updates.</p>
+  </div>
+ </section>
+ <section class="right"><div class="map-wrap"><div class="map-head">📍 &nbsp; Live journey map <span style="font-weight:500;color:#718198">· Demo</span></div><div id="map"></div><div class="map-footer"><div><b id="mapStatus">Your map is ready</b><br><span id="mapSub">Choose a destination to preview a route</span></div><button class="secondary" id="centerMap">Re-center</button></div></div></section>
+</main>
+<nav class="bottomnav">
+ <button class="navbtn active" data-scroll="bookingCard"><span>⌂</span>Home</button><button class="navbtn" data-scroll="tripPanel"><span>▣</span>My rides</button><button class="navbtn" data-scroll="sosOpen"><span>♧</span>Safety</button><button class="navbtn" data-scroll="bookingCard"><span>◉</span>Profile</button>
+</nav>
+</div>
+<div class="modal-backdrop" id="sosModal" role="dialog" aria-modal="true" aria-labelledby="sosTitle">
+ <div class="modal" id="sosConfirm">
+  <div style="font-size:28px;margin-bottom:8px">🛡️</div><h2 id="sosTitle">MYWAY SOS</h2>
+  <p>This is a demonstration. If this were the real service, your live trip details and location would be sent to MYWAY Safety Operations and your selected trusted contacts.</p>
+  <div class="safe-strip"><div class="shield">!</div><div><b>Demo alert only</b><span>No emergency services or real contacts will be notified.</span></div></div>
+  <div class="modal-actions"><button class="secondary" id="cancelSOS">Cancel</button><button class="primary danger" id="sendSOS">Send demo SOS</button></div>
+ </div>
+ <div class="modal" id="sosSent" style="display:none">
+  <div class="sent-icon">✓</div><h2>Demo alert sent</h2><p><b style="color:#15945e">Help requested (simulated).</b> The demonstration shows an alert being logged for MYWAY Safety Operations and your two selected trusted contacts.</p>
+  <div class="contact-row"><span>MYWAY Safety Operations</span><span class="tag">Alert logged</span></div><div class="contact-row"><span>Mom · Trusted contact</span><span class="tag">Notified in demo</span></div><div class="contact-row"><span>Lindiwe · Trusted contact</span><span class="tag">Notified in demo</span></div>
+  <p class="small-note">This is only a visual simulation. It does not contact anyone or summon assistance.</p>
+  <div class="modal-actions"><button class="primary" id="closeSOS">Close</button></div>
+ </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+let selectedRide="MYWAY Standard", routeLayer=null, pickupMarker=null, destinationMarker=null;
+const map=L.map('map',{zoomControl:true}).setView([-33.9258,18.4232],13);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
+const pin=(color)=>L.divIcon({className:'',html:`<div style="width:25px;height:25px;border:4px solid white;border-radius:50%;background:${color};box-shadow:0 2px 8px #0b2d5b66"></div>`,iconSize:[25,25],iconAnchor:[12,12]});
+pickupMarker=L.marker([-33.9258,18.4232],{icon:pin('#00A3FF')}).addTo(map).bindPopup('MYWAY pick-up · Demo');
+$('centerMap').onclick=()=>map.setView([-33.9258,18.4232],13);
+document.querySelectorAll('.ride-option').forEach(b=>b.onclick=()=>{document.querySelectorAll('.ride-option').forEach(x=>x.classList.remove('active'));b.classList.add('active');selectedRide=b.dataset.ride});
+function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2600)}
+$('useLocation').onclick=()=>{if(!navigator.geolocation){toast('Location is not available in this browser.');return}toast('Requesting your location…');navigator.geolocation.getCurrentPosition(pos=>{const p=[pos.coords.latitude,pos.coords.longitude];map.setView(p,15);pickupMarker.setLatLng(p).bindPopup('Your current location').openPopup();$('pickup').value='My current location';$('mapStatus').textContent='Pick-up location updated';$('mapSub').textContent='Using this device location'},()=>toast('Location permission was not granted.'))};
+function demoDestination(text){const t=text.toLowerCase();if(t.includes('waterfront'))return [-33.9036,18.4208];if(t.includes('university')||t.includes('uct'))return [-33.9575,18.4613];if(t.includes('airport'))return [-33.9715,18.6021];if(t.includes('claremont'))return [-33.9815,18.465];if(t.includes('camps bay'))return [-33.9519,18.377];return [-33.9365,18.4470]}
+$('findRide').onclick=()=>{const dest=$('destination').value.trim();if(!dest){$('destination').focus();toast('Please enter your destination first.');return}const d=demoDestination(dest);if(destinationMarker)map.removeLayer(destinationMarker);destinationMarker=L.marker(d,{icon:pin('#0B2D5B')}).addTo(map).bindPopup('Destination · '+dest);if(routeLayer)map.removeLayer(routeLayer);routeLayer=L.polyline([pickupMarker.getLatLng(),d],{color:'#00A3FF',weight:5,dashArray:'9 8'}).addTo(map);map.fitBounds(routeLayer.getBounds().pad(.25));$('mapStatus').textContent='Route preview ready';$('mapSub').textContent='Illustrative route · Map data from OpenStreetMap';$('routeTitle').textContent=$('pickup').value+' → '+dest;$('tripPanel').classList.add('show');$('findRide').textContent='Update ride preview →';toast(selectedRide+' preview created');};
+$('endTrip').onclick=()=>{$('tripPanel').classList.remove('show');$('findRide').textContent='Find my ride →';if(routeLayer){map.removeLayer(routeLayer);routeLayer=null}if(destinationMarker){map.removeLayer(destinationMarker);destinationMarker=null}map.setView(pickupMarker.getLatLng(),13);$('mapStatus').textContent='Your map is ready';$('mapSub').textContent='Choose a destination to preview a route';toast('Demo trip ended')};
+$('sosOpen').onclick=()=>{$('sosModal').classList.add('show');$('sosConfirm').style.display='block';$('sosSent').style.display='none'};
+$('cancelSOS').onclick=()=>$('sosModal').classList.remove('show');
+$('sendSOS').onclick=()=>{$('sosConfirm').style.display='none';$('sosSent').style.display='block'};
+$('closeSOS').onclick=()=>$('sosModal').classList.remove('show');
+$('sosModal').onclick=e=>{if(e.target===$('sosModal'))$('sosModal').classList.remove('show')};
+document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.navbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');const target=b.dataset.scroll;if(target==='sosOpen'){$('sosOpen').click()}else if(target==='tripPanel'&&!$('tripPanel').classList.contains('show'))toast('Book a demo ride to see My rides');else $(target).scrollIntoView({behavior:'smooth',block:'center'})});
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
